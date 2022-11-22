@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  shlink:
+    image: ghcr.io/jimmylevell/shlink/shlink:latest
+    networks:
+      - traefik-public
+      - levell
+    environment:
+      DEFAULT_DOMAIN=go.app.levell.ch
+      IS_HTTPS_ENABLED=true
+      DB_DRIVER=postgres
+      DB_USER=DOCKER-SECRET-root
+      DB_PASSWORD=DOCKER-SECRET-123abc
+      DB_HOST=levell-postgres
+    secrets:
+      - DATABASE_URL_MATTERMOST
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
+        - traefik.enable=true # enable traefik
+        - traefik.docker.network=traefik-public # put it in the same network as traefik
+        - traefik.constraint-label=traefik-public # assign the same label as traefik so it can be discovered
+        - traefik.http.routers.shlink.rule=Host(`shlink.app.levell.ch`) # listen to port 80 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.shlink.entrypoints=http
+        - traefik.http.routers.shlink.middlewares=https-redirect
+        - traefik.http.middlewares.shlink.redirectscheme.scheme=https # redirect traffic to https
+        - traefik.http.middlewares.shlink.redirectscheme.permanent=true # redirect traffic to https
+        - traefik.http.routers.shlink-secured.rule=Host(`shlink.app.levell.ch`) # listen to port 443 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.shlink-secured.entrypoints=https
+        - traefik.http.routers.shlink-secured.tls.certresolver=le # use the Let's Encrypt certificate we set up earlier
+        - traefik.http.services.shlink-secured.loadbalancer.server.port=8065 # ask Traefik to search for port of the service container
+
+networks:
+   traefik-public:
+    external: true
+   levell:
+    external: true
+
+secrets:
+  DATABASE_URL_MATTERMOST:
+    external: true

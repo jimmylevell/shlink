@@ -1,4 +1,4 @@
-FROM mattermost/mattermost-enterprise-edition:7.5.1
+FROM shlinkio/shlink:stable
 
 USER root
 
