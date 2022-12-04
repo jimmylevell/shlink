@@ -5,8 +5,8 @@ FROM shlinkio/shlink:stable as levell-shlink-base
 
 USER root
 
-RUN apt-get update
-RUN apt-get install dos2unix -y
+RUN apk update
+RUN apk add
 
 RUN mkdir -p /docker
 
