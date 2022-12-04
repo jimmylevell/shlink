@@ -35,7 +35,7 @@ services:
         - traefik.http.routers.shlink-secured.rule=Host(`shlink.app.levell.ch`) # listen to port 443 for request to APP_DOMAIN (use together with the line below)
         - traefik.http.routers.shlink-secured.entrypoints=https
         - traefik.http.routers.shlink-secured.tls.certresolver=le # use the Let's Encrypt certificate we set up earlier
-        - traefik.http.services.shlink-secured.loadbalancer.server.port=8065 # ask Traefik to search for port of the service container
+        - traefik.http.services.shlink-secured.loadbalancer.server.port=8080 # ask Traefik to search for port of the service container
 
 networks:
    traefik-public:
