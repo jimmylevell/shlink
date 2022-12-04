@@ -43,5 +43,7 @@ networks:
     external: true
 
 secrets:
-  DATABASE_URL_MATTERMOST:
+  DB_USER_SHLINK:
+    external: true
+  DB_PASSWORD_SHLINK:
     external: true
