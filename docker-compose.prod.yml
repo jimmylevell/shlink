@@ -9,6 +9,7 @@ services:
     environment:
       DEFAULT_DOMAIN: shlink.app.levell.ch
       DB_DRIVER: postgres
+      DB_NAME: DOCKER-SECRET->DB_USER_SHLINK
       DB_USER: DOCKER-SECRET->DB_USER_SHLINK
       DB_PASSWORD: DOCKER-SECRET->DB_PASSWORD_SHLINK
       DB_HOST: levell-postgres
