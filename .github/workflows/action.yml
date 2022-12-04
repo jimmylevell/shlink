@@ -52,6 +52,7 @@ jobs:
         with:
           push: true
           context: .
+          target: levell-shlink-deploy
           tags: |
             ghcr.io/jimmylevell/shlink/shlink:latest
       -
