@@ -7,14 +7,15 @@ services:
       - traefik-public
       - levell
     environment:
-      DEFAULT_DOMAIN=go.app.levell.ch
-      IS_HTTPS_ENABLED=true
-      DB_DRIVER=postgres
-      DB_USER=DOCKER-SECRET-root
-      DB_PASSWORD=DOCKER-SECRET-123abc
-      DB_HOST=levell-postgres
+      DEFAULT_DOMAIN: shlink.app.levell.ch
+      IS_HTTPS_ENABLED: true
+      DB_DRIVER: postgres
+      DB_USER: DOCKER-SECRET->DB_USER_SHLINK
+      DB_PASSWORD: DOCKER-SECRET->DB_PASSWORD_SHLINK
+      DB_HOST: levell-postgres
     secrets:
-      - DATABASE_URL_MATTERMOST
+      - DB_USER_SHLINK
+      - DB_PASSWORD_SHLINK
     deploy:
       replicas: 1
       update_config:

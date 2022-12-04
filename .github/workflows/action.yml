@@ -43,6 +43,7 @@ jobs:
         with:
           context: .
           load: true
+          target: levell-shlink-deploy
           tags: |
             ghcr.io/jimmylevell/shlink/shlink:latest
       -
