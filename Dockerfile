@@ -5,12 +5,15 @@ FROM shlinkio/shlink:stable as levell-shlink-base
 
 USER root
 
+RUN apt-get update
+RUN apt-get install dos2unix -y
+
 RUN mkdir -p /docker
 
 ###############################################################################################
 # levell traefik - DEPLOY
 ###############################################################################################
-FROM levell-shlink-base as levell-shlink-DEPLOY
+FROM levell-shlink-base as levell-shlink-deploy
 
 COPY ./docker/custom_entrypoint.sh /docker/custom_entrypoint.sh
 RUN chmod +x /docker/custom_entrypoint.sh
