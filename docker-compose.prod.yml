@@ -36,6 +36,30 @@ services:
         - traefik.http.routers.shlink-secured.entrypoints=https
         - traefik.http.routers.shlink-secured.tls.certresolver=le # use the Let's Encrypt certificate we set up earlier
         - traefik.http.services.shlink-secured.loadbalancer.server.port=8080 # ask Traefik to search for port of the service container
+  shlink-webclient:
+    image: shlinkio/shlink-web-client:stable
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
+        - traefik.enable=true # enable traefik
+        - traefik.docker.network=traefik-public # put it in the same network as traefik
+        - traefik.constraint-label=traefik-public # assign the same label as traefik so it can be discovered
+        - traefik.http.routers.shlink-webclient.rule=Host(`admin.shlink.app.levell.ch`) # listen to port 80 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.shlink-webclient.entrypoints=http
+        - traefik.http.routers.shlink-webclient.middlewares=https-redirect
+        - traefik.http.middlewares.shlink-webclient.redirectscheme.scheme=https # redirect traffic to https
+        - traefik.http.middlewares.shlink-webclient.redirectscheme.permanent=true # redirect traffic to https
+        - traefik.http.routers.shlink-webclient-secured.rule=Host(`admin.shlink.app.levell.ch`) # listen to port 443 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.shlink-webclient-secured.entrypoints=https
+        - traefik.http.routers.shlink-webclient-secured.tls.certresolver=le # use the Let's Encrypt certificate we set up earlier
+        - traefik.http.services.shlink-webclient-secured.loadbalancer.server.port=80 # ask Traefik to search for port of the service container
 
 networks:
    traefik-public:

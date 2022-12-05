@@ -1,17 +1,17 @@
 ###############################################################################################
-# levell traefik - BASE
+# levell shlink - BASE
 ###############################################################################################
 FROM shlinkio/shlink:stable as levell-shlink-base
 
 USER root
 
 RUN apk update
-RUN apk add
+RUN apk add dos2unix
 
 RUN mkdir -p /docker
 
 ###############################################################################################
-# levell traefik - DEPLOY
+# levell shlink - DEPLOY
 ###############################################################################################
 FROM levell-shlink-base as levell-shlink-deploy
 
